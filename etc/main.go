@@ -45,7 +45,6 @@ func listenOnPort(port int) {
 				fmt.Println("接受TCP连接失败:", err)
 				continue
 			}
-			fmt.Println("hehhe")
 			fn := func(ctx context.Context) {
 				jsonrpc2.NewConn(ctx, jsonrpc2.NewBufferedStream(conn, jsonrpc2.VSCodeObjectCodec{}), &EthService{})
 			}

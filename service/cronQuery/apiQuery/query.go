@@ -32,6 +32,7 @@ func processQuery(now time.Time) {
 			Price:  price,
 			Source: v.source(),
 		}
+		fmt.Println(pt) //todo delete me
 		if dbErr := timescalDb.TimescaleDb.InsertPriceTick(ctx, pt); dbErr != nil {
 			fmt.Println(dbErr) // todo 日志记录
 		}
@@ -39,7 +40,8 @@ func processQuery(now time.Time) {
 }
 
 var apiList = []Price{
-	newBinance(), // 币安查询
+	newBinance(),     // 币安查询
+	newCoinpaprika(), // coinPaprika 查询
 }
 
 type Price interface {
