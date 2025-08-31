@@ -27,6 +27,7 @@ func newBinance() *Binance {
 	res.switchQuery = true //todo 从配置文件读取
 	res.requester = httpRequest.NewClient()
 	res.name = "binance"
+	res.tradingTypes = "SPOT"
 	return res
 }
 
@@ -64,4 +65,8 @@ func (b *Binance) stop(ctx context.Context) error {
 
 func (b *Binance) start(ctx context.Context) error {
 	return nil
+}
+
+func (b *Binance) types(ctx context.Context) string {
+	return b.baseQuery.tradingTypes
 }

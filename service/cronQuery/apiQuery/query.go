@@ -31,6 +31,7 @@ func processQuery(now time.Time) {
 			Symbol: consts.ETH,
 			Price:  price,
 			Source: v.source(),
+			Type:   "SPOT",
 		}
 		fmt.Println(pt) //todo delete me
 		if dbErr := timescalDb.TimescaleDb.InsertPriceTick(ctx, pt); dbErr != nil {
@@ -49,11 +50,13 @@ type Price interface {
 	source() string
 	stop(ctx context.Context) error
 	start(ctx context.Context) error
+	types(ctx context.Context) string
 }
 
 type baseQuery struct {
-	name        string
-	url         string
-	switchQuery bool
-	requester   *httpRequest.Requester
+	name         string
+	url          string
+	switchQuery  bool
+	requester    *httpRequest.Requester
+	tradingTypes string
 }

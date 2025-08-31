@@ -68,3 +68,7 @@ func (b *Coinpaprika) stop(ctx context.Context) error {
 func (b *Coinpaprika) start(ctx context.Context) error {
 	return nil
 }
+
+func (b *Coinpaprika) types(ctx context.Context) string {
+	return b.baseQuery.tradingTypes
+}

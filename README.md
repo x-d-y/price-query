@@ -15,19 +15,25 @@
 - 启动
 ```aiignore
 
-docker run -d --name timescaledb -p 5432:5432  -v $(path_to_your_project):/pgdata -e PGDATA=/pgdata -e POSTGRES_PASSWORD=password timescale/timescaledb-ha:pg17
+docker network create hushine-tech
 
+docker run -d --name timescaledb --network hushine-tech -p 5432:5432 -v /home/xdy/develop/data/price-query/timescalDb_data:/pgdata -e PGDATA=/pgdata -e POSTGRES_PASSWORD=password timescale/timescaledb-ha:pg17
 
 CREATE DATABASE cryptocurrency;
 
-CREATE TABLE price_ticks (
-    time        TIMESTAMPTZ       NOT NULL,
-    symbol      VARCHAR(10)       NOT NULL,  -- 币种代码，比如 BTC, ETH, LTC
-    price       NUMERIC(12, 4)    NOT NULL,
-    source      VARCHAR(32)       NOT NULL,
-    volume      INT               NULL,
+CREATE TABLE price_ticks_$(interval)
+(
+    time   TIMESTAMPTZ     NOT NULL,
+    symbol VARCHAR(10)     NOT NULL, -- 币种代码，比如 BTCUSDT, ETHUSDT 等
+    price  NUMERIC(12, 4)  NOT NULL,
+    source VARCHAR(32)     NOT NULL,
+    volume NUMERIC(30, 18) NULL,     -- 交易量
+    type   VARCHAR(16)     NOT NULL, -- 交易类型，使用现货是 spot, 合约是 feature
     PRIMARY KEY (time, source, symbol)
 );
+
+
+其中 $(interval) 是可以根据间隔更换的， 例如 1s, 1m ， 15m, 1w , 1M 等
 
 
 

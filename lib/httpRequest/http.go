@@ -21,14 +21,6 @@ func NewClient() *Requester {
 }
 
 func (r *Requester) ContextGet(ctx context.Context, url string, header http.Header) (*http.Response, error) {
-	timeout := r.timeout
-	if timeout == 0 {
-		timeout = time.Second * 5
-	}
-	ctx, cancel := context.WithTimeout(ctx, timeout)
-	defer func() {
-		cancel()
-	}()
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -42,6 +34,5 @@ func (r *Requester) ContextGet(ctx context.Context, url string, header http.Head
 	if rErr != nil {
 		return nil, rErr
 	}
-
 	return response, nil
 }
