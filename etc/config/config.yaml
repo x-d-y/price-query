@@ -1,0 +1,4 @@
+db_config:
+  addr: 127.0.0.1
+  user: postgres
+  pass: password

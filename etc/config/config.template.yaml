@@ -1,0 +1,4 @@
+db_config:
+  addr: 127.0.0.1 #如果是在容器内访问，需要加入到对应的 docker 网络中
+  user: postgres
+  pass: password

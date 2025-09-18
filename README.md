@@ -28,7 +28,10 @@ CREATE TABLE price_ticks_$(interval)
     price  NUMERIC(12, 4)  NOT NULL,
     source VARCHAR(32)     NOT NULL,
     volume NUMERIC(30, 18) NULL,     -- 交易量
-    type   VARCHAR(16)     NOT NULL, -- 交易类型，使用现货是 spot, 合约是 feature
+    quote  NUMERIC(30, 18) NULL,     -- 交易额
+    taker_buy_volume       NUMERIC(30, 18) NULL,   -- taker buy 交易量
+    taker_buy_quote        NUMERIC(30, 18) NULL,   -- taker buy 交易额
+    trade_num              INT NULL, -- 交易订单数
     PRIMARY KEY (time, source, symbol)
 );
 

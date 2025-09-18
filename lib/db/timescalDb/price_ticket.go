@@ -10,22 +10,25 @@ import (
 // 场景不复杂，先不用接口定义，直接写
 
 type PriceTicks struct {
-	Time   time.Time
-	Symbol string
-	Price  float64
-	Source string
-	Volume float64
-	Type   string
+	Time           time.Time
+	Symbol         string
+	Price          float64
+	Source         string
+	Volume         float64
+	Quote          float64
+	TradeNum       int64
+	TakerBuyVolume float64
+	TakerBuyQuote  float64
 }
 
 func (p *timescaleDb) InsertPriceTickBatch(ctx context.Context, ticks []*PriceTicks, interval string) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second) // 大批量所以 5 秒超时
 	defer cancel()
-	sql := `INSERT INTO %s (time, symbol, price, source, volume, type) VALUES %s`
+	sql := `INSERT INTO %s (time, symbol, price, source, volume, quote, trade_num, taker_buy_volume, taker_buy_quote) VALUES %s`
 	values := ""
 	for _, tick := range ticks {
-		values = values + fmt.Sprintf("('%s', '%s', %f, '%s', %f, '%s'),",
-			tick.Time.Format(time.RFC3339), tick.Symbol, tick.Price, tick.Source, tick.Volume, tick.Type)
+		values = values + fmt.Sprintf("('%s', '%s', %f, '%s', %f, '%f', '%d', '%f', '%f'),",
+			tick.Time.Format(time.RFC3339), tick.Symbol, tick.Price, tick.Source, tick.Volume, tick.Quote, tick.TradeNum, tick.TakerBuyVolume, tick.TakerBuyQuote)
 	}
 	values = strings.TrimRight(values, ",")
 	sql = fmt.Sprintf(sql, tablePriceTicksName+"_"+interval, values)

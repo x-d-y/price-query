@@ -17,7 +17,6 @@ RUN file /src/price-query || true
 # final image：Alpine 极简ERROR: failed to build: failed to solve: circular dependency detected on stage: builder
 
 FROM alpine:3.19 AS runtime
-# 可选：创建专用用户
 COPY --from=builder /src/price-query /app/price-query
 RUN chmod +x /app/price-query
 ENTRYPOINT ["/app/price-query"]
